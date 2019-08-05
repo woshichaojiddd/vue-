@@ -23,6 +23,7 @@
       </div>
       <p v-show="dershow"><van-divider>暂无搜索历史</van-divider></p>
     </div>
+    
     <!-- 品牌数据列表 -->
     <div class="hiscon" v-show="proshow">
       <van-row type="flex" justify="space-between" v-for="item in prodList" :key="item.id" >
@@ -67,7 +68,16 @@ export default {
       }
       this.hishow = false;
       this.proshow = true;
-      this.historyList.push(this.keyword)
+      // 如果关键字不重复 则保存到本地
+      const index = this.historyList.findIndex(item=>{
+        return item == this.keyword
+      })
+      if(index != -1) {
+        this.historyList.splice(index,1)
+        this.historyList.unshift(this.keyword)
+      } else {
+        this.historyList.unshift(this.keyword)
+      }
       localStorage.setItem('keyword',JSON.stringify(this.historyList))
     },
     // 点击取消隐藏品牌数据
@@ -113,8 +123,9 @@ input {
 }
 .history {
   margin-top: 10px;
+  padding-left: 5px;
   .tag {
-    margin: 15px 10px 0;
+    margin: 15px 5px 0;
     .van-tag {
       margin-left: 10px;
     }

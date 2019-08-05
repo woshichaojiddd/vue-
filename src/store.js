@@ -12,9 +12,6 @@ export default new Vuex.Store({
     mutations: {
         addGoods(state, info) {
             // 如果id值相同 则添加 不同则push
-            if (state.goods.length == 0) {
-                return state.goods.push(info)
-            }
             const index = state.goods.findIndex(item => {
                 return info.id == item.id
             })
